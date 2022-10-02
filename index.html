@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <title>Vue.js App</title>
+    <link href="main.css" rel="stylesheet">
+</head>
+<body>
+<!-- Vue인스턴스를 벗어나 텍스트 바인딩 잘못된 예 -->
+<p>{{잘못된예message}}</p>
+
+<div id="app" v-cloak>
+    <!-- 여기 #app 내부에 템플릿을 출력할 것입니다.  -->
+    <!-- 텍스트 바인딩 -->
+            <p>{{message}}</p>
+    <!-- 반복 렌더링 -->
+        <ol>
+            <li v-for="item in list">{{ item }}</li>
+        </ol>
+    <!-- 이벤트 사용하기 -->
+        <button v-on:click="handleClick">클릭</button>
+    <!-- 입력 양식과 동기화하기 -->
+    <p>{{message2}}</p>
+    <p>{{count}}</p>
+    <input v-model="message2">
+    <input v-model.number="count">
+    <!-- 조건 분기 -->
+    <p v-if="show">조건분기 예제!</p>
+    <br/>
+    <br/>
+    <br/>
+
+    <button v-on:click="show2=!show2">변경하기</button>
+    <transition>
+        <p v-if="show2">트랜지션과 애니메이션!</p>
+    </transition>
+
+<!-- 템플릿 제어 디렉티브 -->
+<a v-bind:href="url" v-pre>
+    Hello {{message3}}
+</a>
+
+<!-- Mustache와 디렉티브 등이 그대로 출력 -->
+<a v-bind:href="url">Hello {{message3}}</a>
+
+<!-- v-once -->
+<a v-bind:href="url" v-once>
+    Hello {{ message4}}
+</a>
+
+<br/><br/>
+
+<!-- 80페이지 이후 -->
+<!-- <button v-on:click="<이벤트 핸들러">클릭</button> -->
+<p>80 page 이벤트 핸들링</p>
+<button v-on:click="handleClick2">클릭</button>
+<button @click="handleClick2">클릭</button>
+
+<button @click="count++">클릭하면 값(count) 1 상승 </button>
+
+<br/><br/>
+<p>81 page 인라인 메서드 핸들링</p>
+<!-- 인라인 메서드 핸들러의 식에서는 "이벤트 객체" 또는 "사용자 정의 이벤트(의?) 매개변수"를 $event라는 변수 이름으로 사용할 수 있습니다. -->
+
+<!-- 다음 예는 "이벤트 객체"와 "스코프 내부의 item 속성"을 매개 변수로 handleClick2 메서드를 호출합니다. -->
+<button @click="handleClick2($event, item)">클릭</button>
+<br/>
+<br/>
+<button @click="show3=!show3">나와랏 심쿵 강아지! (토글)</button>
+<br/>
+<img src="image.png" v-on:load="show3=false" v-bind:class="{hide:!show3}">
+
+<!--작동안함! 요소의 스크롤 이벤트 핸들하기 -->
+<div v-on:scroll="handleScroll()">
+    콘텐츠
+</div>
+<!-- 마우스 휠 이벤트 핸들하기 -->
+<div v-on:mousewheel="handleClick4()">
+    콘텐츠
+</div>
+
+<br/><br/>
+<p>83 page 드래그 이벤트</p>
+
+<div v-on:dragstart="handleDrag" draggable>
+   드래그시 경고창 발생!
+</div>
+
+<br/><br/>
+<p>83 page 입력 양식 입력 추출하기</p>
+
+<input v-bind:value="message" v-on:change="handleInput">
+
+<br/><br/>
+<p>85 page 이벤트 장식자</p>
+<div v-on:dragstart.once="handleDrag" draggable>
+    드래그시 한 번만 경고창 발생!
+ </div>
+ <p>Stop</p>
+ <div v-on:click="handler('div1')">
+    div1
+    <a href="#top" v-on:click.stop="handler('div2')">div2</a>
+  </div>
+
+  <p>prevent</p>
+  <div v-on:click="handler('div1')">
+    div1
+    <a href="#top" v-on:click.prevent="handler('div2')">div2</a>
+  </div>
+
+  <p>capture</p>
+  <div v-on:click.capture="handler('div1')">
+    div1
+    <div v-on:click="handler('div2')">
+      div2
+      <div v-on:click="handler('div3')">div3</div>
+    </div>
+  </div>
+
+  <p>native</p>
+<!-- 컴포넌트를 클릭하면 핸들러가 호출됨 -->
+<my-component v-on:click.native="handler"></my-component>
+<!-- 컴포넌트를 클릭하더라도 핸들러가 호출되지 않음 -->
+<my-component v-on:click="handler"></my-component>
+
+
+<div v-on:click.right="handleRight">마우스 오른쪽 버튼 눌렀을때 출력</div>
+<div v-on:click.right.prevent="handlePreventRight">우클릭방지! 컨텍스트 메뉴가 출력되지 않음</div>
+ 
+<p>93페이지 v-model</p>
+<div id='app'>
+    <input type="checkbox" v-model="arr" value="mine" checked>mine
+    <input type="checkbox" v-model="arr" value="it">it
+    <input type="checkbox" v-model="arr" value="record">record
+    <button @click='checkArr()'>check</button>
+  </div>
+
+  <p>93페이지 textarea</p>
+<textarea v-model="message"></textarea>
+
+<pre>{{message}}</pre>
+
+<p>94페이지 체크박스</p>
+<label>
+    <input type="checkbox" v-model="val">{{val}}
+</label>
+
+<p>146페이지</p>
+
+<comp-child val="자식A"></comp-child>
+<comp-child val="자식B"></comp-child>
+
+<p>147페이지</p>
+<child-comp v-bind:val="message" class="item"></child-comp>
+
+<p>149페이지</p>
+
+
+
+</div>    
+    <script
+        src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
